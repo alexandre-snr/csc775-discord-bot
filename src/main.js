@@ -1,4 +1,5 @@
 const { Client, Events, GatewayIntentBits } = require('discord.js');
+const { openConnection } = require('./database/connection');
 
 const client = new Client({
   intents: [
@@ -19,6 +20,14 @@ client.on(Events.MessageCreate, async (message) => {
 
   if (message.content === 'Ping') {
     await message.reply('Pong!');
+  } else if (message.content === '/companies') {
+    const db = await openConnection();
+
+    const [rows] = await db.execute('SELECT * FROM Company');
+
+    await message.reply(rows.map((company) => `${company.company_id}: ${company.name}`).join('\n'));
+
+    await db.destroy();
   }
 });
 
