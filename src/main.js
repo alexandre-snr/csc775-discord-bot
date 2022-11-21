@@ -1,5 +1,7 @@
-const { Client, Events, GatewayIntentBits } = require('discord.js');
-const { openConnection } = require('./database/connection');
+const {
+  Client, Events, GatewayIntentBits, Collection, REST, Routes,
+} = require('discord.js');
+const commands = require('./commands');
 
 const client = new Client({
   intents: [
@@ -8,27 +10,43 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+client.commands = new Collection();
+commands.forEach((command) => {
+  client.commands.set(command.data.name, command);
+});
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on(Events.MessageCreate, async (message) => {
-  if (message.author.id === client.user.id) {
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
     return;
   }
 
-  if (message.content === 'Ping') {
-    await message.reply('Pong!');
-  } else if (message.content === '/companies') {
-    const db = await openConnection();
-
-    const [rows] = await db.execute('SELECT * FROM Company');
-
-    await message.reply(rows.map((company) => `${company.company_id}: ${company.name}`).join('\n'));
-
-    await db.destroy();
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+const rest = new REST().setToken(process.env.DISCORD_TOKEN);
+
+(async () => {
+  try {
+    await rest.put(
+      Routes.applicationGuildCommands(process.env.DISCORD_CLIENT, process.env.DISCORD_GUILD),
+      { body: commands.map((command) => command.data.toJSON()) },
+    );
+    await client.login(process.env.DISCORD_TOKEN);
+  } catch (err) {
+    console.log(err);
+  }
+})();
