@@ -1,0 +1,17 @@
+{
+  "name": "csc775-discord-bot",
+  "version": "1.0.0",
+  "description": "CSC775 - Milestone 3",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node .",
+    "lint": "eslint ."
+  },
+  "author": "Alexandre Sauner",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}
