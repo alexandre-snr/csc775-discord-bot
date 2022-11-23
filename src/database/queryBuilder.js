@@ -84,8 +84,28 @@ class Update {
   }
 }
 
+class Procedure {
+  constructor({
+    procedureName,
+    args,
+  }) {
+    this.procedureName = procedureName;
+    this.args = args;
+  }
+
+  async execute(conn) {
+    const names = '?'.repeat(this.args.length).split('').join(', ');
+
+    const query = `CALL ${this.procedureName}(${names}, @output); SELECT @output;`;
+
+    const result = await conn.query(query, this.args);
+    return result[0][1][0]['@output'];
+  }
+}
+
 module.exports = {
   Insert: (args) => new Insert(args),
   Select: (args) => new Select(args),
   Update: (args) => new Update(args),
+  Procedure: (args) => new Procedure(args),
 };

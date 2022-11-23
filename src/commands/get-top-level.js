@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { Procedure } = require('../database/queryBuilder');
+const { openConnection } = require('../database/connection');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,7 +11,15 @@ module.exports = {
       .setDescription('The name of the skill')
       .setRequired(true)),
   async execute(interaction) {
-    const skillName = interaction.options.getString('skill-name');
-    await interaction.reply(`Pong ${skillName}!`);
+    const skillNameOption = interaction.options.getString('skill-name');
+    const conn = await openConnection();
+
+    const output = await Procedure({
+      procedureName: 'getHighestLevelOfSkillName',
+      args: [skillNameOption],
+    }).execute(conn);
+
+    await interaction.reply(`The highest level for skill '${skillNameOption}' is ${output}`);
+    await conn.destroy();
   },
 };

@@ -54,12 +54,12 @@ class User {
       condition: 'address.address_id = user.address',
     });
 
-    const [results] = await query.execute(conn);
-    if (results.length <= 0) {
+    const [rows] = await query.execute(conn);
+    if (rows.length <= 0) {
       return null;
     }
 
-    const row = results[0];
+    const row = rows[0];
     return new User({
       userId: row.user_id,
       firstName: row.first_name,
