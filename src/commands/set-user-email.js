@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const User = require('../database/User');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,8 +15,22 @@ module.exports = {
       .setDescription('The user')
       .setRequired(true)),
   async execute(interaction) {
-    const email = interaction.options.getString('email');
-    const user = interaction.options.getString('user');
-    await interaction.reply(`Pong ${email} ${user}!`);
+    const emailOption = interaction.options.getString('email');
+    const userOption = interaction.options.getString('user');
+
+    const conn = await openConnection();
+
+    const user = await User.getByName(conn, userOption);
+    if (!user) {
+      await interaction.reply(`Could not find user '${userOption}'`);
+      await conn.destroy();
+      return;
+    }
+
+    user.credentials.email = emailOption;
+    await user.save(conn);
+
+    await interaction.reply(`${user.firstName} ${user.lastName}'s email was set to '${user.credentials.email}'`);
+    await conn.destroy();
   },
 };
