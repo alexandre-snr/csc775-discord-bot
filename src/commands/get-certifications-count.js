@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const { Procedure } = require('../database/queryBuilder');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,7 +11,16 @@ module.exports = {
       .setDescription('The name of the institution')
       .setRequired(true)),
   async execute(interaction) {
-    const institutionName = interaction.options.getString('institution-name');
-    await interaction.reply(`Pong ${institutionName}!`);
+    const institutionNameOption = interaction.options.getString('institution-name');
+
+    const conn = await openConnection();
+
+    const output = await Procedure({
+      procedureName: 'getCertificationCountOfInstitution',
+      args: [institutionNameOption],
+    }).execute(conn);
+
+    await interaction.reply(`The number of certifications proposed by '${institutionNameOption}' is ${output}`);
+    await conn.destroy();
   },
 };
