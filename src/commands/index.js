@@ -1,18 +1,18 @@
 module.exports = [
-  require('./count-certifications'),
-  require('./create-project'),
-  require('./create-sprint'),
-  require('./delete-customer'),
-  require('./delete-engineer'),
-  require('./find-lazy-employees'),
+  require('./count-certifications'), // TODO
+  require('./create-project'), // TODO
+  require('./create-sprint'), // TODO
+  require('./delete-customer'), // TODO
+  require('./delete-engineer'), // TODO
+  require('./find-lazy-employees'), // TODO
   require('./get-certifications-count'),
-  require('./get-employees-count'),
-  require('./get-level-name'),
+  require('./get-employees-count'), // TODO
+  require('./get-level-name'), // TODO
   require('./get-top-level'),
-  require('./most-filled-pod'),
-  require('./overused-coworking-spaces'),
+  require('./most-filled-pod'), // TODO
+  require('./overused-coworking-spaces'), // TODO
   require('./set-user-country'),
   require('./set-user-email'),
-  require('./understaffed-projects'),
-  require('./unmastered-skills'),
+  require('./understaffed-projects'), // TODO
+  require('./unmastered-skills'), // TODO
 ];
