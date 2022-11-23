@@ -1,5 +1,4 @@
 module.exports = [
-  require('./companies'),
   require('./count-certifications'),
   require('./create-project'),
   require('./create-sprint'),
@@ -12,7 +11,6 @@ module.exports = [
   require('./get-top-level'),
   require('./most-filled-pod'),
   require('./overused-coworking-spaces'),
-  require('./ping'),
   require('./set-user-country'),
   require('./set-user-email'),
   require('./understaffed-projects'),
