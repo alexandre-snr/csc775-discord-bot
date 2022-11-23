@@ -12,6 +12,8 @@
     },
     "rules": {
         "no-console": "off",
-        "global-require": "off"
+        "global-require": "off",
+        "max-classes-per-file": "off",
+        "prefer-template": "off"
     }
 }

@@ -41,11 +41,12 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {
+    await client.login(process.env.DISCORD_TOKEN);
+
     await rest.put(
       Routes.applicationGuildCommands(process.env.DISCORD_CLIENT, process.env.DISCORD_GUILD),
       { body: commands.map((command) => command.data.toJSON()) },
     );
-    await client.login(process.env.DISCORD_TOKEN);
   } catch (err) {
     console.log(err);
   }
