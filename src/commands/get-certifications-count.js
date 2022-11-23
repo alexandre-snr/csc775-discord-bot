@@ -15,10 +15,9 @@ module.exports = {
 
     const conn = await openConnection();
 
-    const output = await Procedure({
-      procedureName: 'getCertificationCountOfInstitution',
-      args: [institutionNameOption],
-    }).execute(conn);
+    const output = await Procedure('getCertificationCountOfInstitution')
+      .args(institutionNameOption)
+      .call(conn);
 
     await interaction.reply(`The number of certifications proposed by '${institutionNameOption}' is ${output}`);
     await conn.destroy();

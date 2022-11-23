@@ -14,10 +14,8 @@ module.exports = {
     const skillNameOption = interaction.options.getString('skill-name');
     const conn = await openConnection();
 
-    const output = await Procedure({
-      procedureName: 'getHighestLevelOfSkillName',
-      args: [skillNameOption],
-    }).execute(conn);
+    const output = await Procedure('getHighestLevelOfSkillName').args(skillNameOption)
+      .call(conn);
 
     await interaction.reply(`The highest level for skill '${skillNameOption}' is ${output}`);
     await conn.destroy();

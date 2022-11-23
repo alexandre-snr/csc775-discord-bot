@@ -85,20 +85,22 @@ class Update {
 }
 
 class Procedure {
-  constructor({
-    procedureName,
-    args,
-  }) {
+  constructor(procedureName) {
     this.procedureName = procedureName;
-    this.args = args;
+    this.procedureArguments = [];
   }
 
-  async execute(conn) {
-    const names = '?'.repeat(this.args.length).split('').join(', ');
+  args() {
+    this.procedureArguments = Array.from(arguments);
+    return this;
+  }
+
+  async call(conn) {
+    const names = '?'.repeat(this.procedureArguments.length).split('').join(', ');
 
     const query = `CALL ${this.procedureName}(${names}, @output); SELECT @output;`;
 
-    const result = await conn.query(query, this.args);
+    const result = await conn.query(query, this.procedureArguments);
     return result[0][1][0]['@output'];
   }
 }
