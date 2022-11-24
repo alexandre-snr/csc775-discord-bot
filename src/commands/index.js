@@ -6,7 +6,7 @@ module.exports = [
   require('./delete-engineer'),
   require('./find-lazy-employees'), // TODO
   require('./get-certifications-count'),
-  require('./get-employees-count'), // TODO
+  require('./get-employees-count'),
   require('./get-level-name'),
   require('./get-top-level'),
   require('./most-filled-pod'), // TODO
