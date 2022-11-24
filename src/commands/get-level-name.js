@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const { Function } = require('../database/queryBuilder');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,7 +11,14 @@ module.exports = {
       .setDescription('The level of the skill')
       .setRequired(true)),
   async execute(interaction) {
-    const level = interaction.options.getNumber('level');
-    await interaction.reply(`Pong ${level}!`);
+    const levelOption = interaction.options.getNumber('level');
+    const conn = await openConnection();
+
+    const output = await Function('getSkillLevelStr')
+      .args(levelOption)
+      .call(conn);
+
+    await interaction.reply(`The name for this level is '${output}'`);
+    await conn.destroy();
   },
 };

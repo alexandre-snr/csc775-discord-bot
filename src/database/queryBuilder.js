@@ -122,10 +122,32 @@ class Procedure {
   }
 }
 
+class Function {
+  constructor(functionName) {
+    this.functionName = functionName;
+    this.functionArguments = [];
+  }
+
+  args() {
+    this.functionArguments = Array.from(arguments);
+    return this;
+  }
+
+  async call(conn) {
+    const names = '?'.repeat(this.functionArguments.length).split('').join(', ');
+
+    const query = `SELECT ${this.functionName}(${names})`;
+
+    const result = await conn.query(query, this.functionArguments);
+    return result[0][0][Object.keys(result[0][0])[0]];
+  }
+}
+
 module.exports = {
   Insert: (args) => new Insert(args),
   Select: (args) => new Select(args),
   Update: (args) => new Update(args),
   Delete: (args) => new Delete(args),
   Procedure: (args) => new Procedure(args),
+  Function: (args) => new Function(args),
 };

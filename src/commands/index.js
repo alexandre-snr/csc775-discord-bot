@@ -7,7 +7,7 @@ module.exports = [
   require('./find-lazy-employees'), // TODO
   require('./get-certifications-count'),
   require('./get-employees-count'), // TODO
-  require('./get-level-name'), // TODO
+  require('./get-level-name'),
   require('./get-top-level'),
   require('./most-filled-pod'), // TODO
   require('./overused-coworking-spaces'), // TODO
