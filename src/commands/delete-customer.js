@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const Customer = require('../database/Customer');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,7 +11,20 @@ module.exports = {
       .setDescription('The customer')
       .setRequired(true)),
   async execute(interaction) {
-    const customer = interaction.options.getString('customer');
-    await interaction.reply(`Pong ${customer}!`);
+    const customerOption = interaction.options.getString('customer');
+
+    const conn = await openConnection();
+
+    const customer = await Customer.getByName(conn, customerOption);
+    if (!customer) {
+      await interaction.reply(`Could not find customer '${customerOption}'`);
+      await conn.destroy();
+      return;
+    }
+
+    await customer.remove(conn);
+
+    await interaction.reply(`Customer '${customer.name}' was deleted`);
+    await conn.destroy();
   },
 };

@@ -84,6 +84,23 @@ class Update {
   }
 }
 
+class Delete {
+  constructor({
+    tableName,
+    where,
+    whereValue,
+  }) {
+    this.tableName = tableName;
+    this.where = where;
+    this.whereValue = whereValue;
+  }
+
+  async execute(conn) {
+    const query = `DELETE FROM ${this.tableName} WHERE ${this.where}`;
+    return conn.execute(query, [this.whereValue]);
+  }
+}
+
 class Procedure {
   constructor(procedureName) {
     this.procedureName = procedureName;
@@ -109,5 +126,6 @@ module.exports = {
   Insert: (args) => new Insert(args),
   Select: (args) => new Select(args),
   Update: (args) => new Update(args),
+  Delete: (args) => new Delete(args),
   Procedure: (args) => new Procedure(args),
 };

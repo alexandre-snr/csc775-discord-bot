@@ -2,7 +2,7 @@ module.exports = [
   require('./count-certifications'), // TODO
   require('./create-project'), // TODO
   require('./create-sprint'), // TODO
-  require('./delete-customer'), // TODO
+  require('./delete-customer'),
   require('./delete-engineer'), // TODO
   require('./find-lazy-employees'), // TODO
   require('./get-certifications-count'),
