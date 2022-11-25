@@ -1,4 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const Project = require('../database/Project');
+const Sprint = require('../database/Sprint');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,9 +20,26 @@ module.exports = {
       .setDescription('The end of the sprint')
       .setRequired(true)),
   async execute(interaction) {
-    const projectName = interaction.options.getString('project-name');
-    const startDate = interaction.options.getString('start-date');
-    const endDate = interaction.options.getString('end-date');
-    await interaction.reply(`Pong ${projectName} ${startDate} ${endDate}!`);
+    const projectNameOption = interaction.options.getString('project-name');
+    const startDateOption = interaction.options.getString('start-date');
+    const endDateOption = interaction.options.getString('end-date');
+    const conn = await openConnection();
+
+    const project = await Project.getByName(conn, projectNameOption);
+    if (!project) {
+      await interaction.reply(`Could not find project '${projectNameOption}'`);
+      await conn.end();
+      return;
+    }
+
+    const sprint = new Sprint({
+      project: project.projectId,
+      startDate: new Date(startDateOption),
+      endDate: new Date(endDateOption),
+    });
+    await sprint.save(conn);
+
+    await interaction.reply(`Sprint for project '${projectNameOption}' from ${startDateOption} to ${endDateOption} created!`);
+    await conn.end();
   },
 };
