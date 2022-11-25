@@ -1,5 +1,5 @@
 module.exports = [
-  require('./count-certifications'), // TODO
+  require('./count-certifications'),
   require('./create-project'), // TODO
   require('./create-sprint'), // TODO
   require('./delete-customer'),

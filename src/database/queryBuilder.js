@@ -36,23 +36,41 @@ class Select {
     tableName,
     tableNameVar,
     condition,
+    joinType,
   }) {
     this.joins.push({
       tableName,
       tableNameVar,
       condition,
+      joinType,
     });
+    return this;
+  }
+
+  groupBy(fields) {
+    this.groupByFields = fields;
+    return this;
+  }
+
+  having(conditions) {
+    this.havingConditions = conditions;
     return this;
   }
 
   async execute(conn) {
     const fields = this.fields.join(', ');
-    const joins = this.joins.map((join) => `JOIN ${join.tableName} ${join.tableNameVar} ON ${join.condition}`);
+    const joins = this.joins.map(
+      (join) => `${join.joinType ? `${join.joinType} ` : ''}JOIN ${join.tableName} ${join.tableNameVar} ON ${join.condition}`,
+    );
 
     const query = `SELECT ${fields} FROM ${this.tableName}`
       + (this.tableNameVar ? ` ${this.tableNameVar}` : '')
       + (joins.length > 0 ? ` ${joins.join(' ')}` : '')
-      + (this.where ? ` WHERE ${this.where}` : '');
+      + (this.where ? ` WHERE ${this.where}` : '')
+      + (this.groupByFields ? ` GROUP BY ${this.groupByFields}` : '')
+      + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '');
+
+    console.log(query);
 
     return conn.execute(query, this.vars);
   }
