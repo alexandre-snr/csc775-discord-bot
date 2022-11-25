@@ -12,7 +12,9 @@ class Insert {
     const names = '?'.repeat(Object.keys(this.data).length).split('').join(', ');
     const values = Object.keys(this.data).map((key) => this.data[key]);
 
-    return conn.execute(`INSERT INTO ${this.tableName}(${fields}) VALUES (${names})`, values);
+    const query = `INSERT INTO ${this.tableName}(${fields}) VALUES (${names})`;
+
+    return conn.execute(query, values);
   }
 }
 
@@ -69,8 +71,6 @@ class Select {
       + (this.where ? ` WHERE ${this.where}` : '')
       + (this.groupByFields ? ` GROUP BY ${this.groupByFields}` : '')
       + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '');
-
-    console.log(query);
 
     return conn.execute(query, this.vars);
   }

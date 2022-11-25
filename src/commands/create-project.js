@@ -1,4 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { openConnection } = require('../database/connection');
+const Customer = require('../database/Customer');
+const ProjectManager = require('../database/ProjectManager');
+const Project = require('../database/Project');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,9 +21,33 @@ module.exports = {
       .setDescription('The project manager of the project')
       .setRequired(true)),
   async execute(interaction) {
-    const projectName = interaction.options.getString('project-name');
-    const customer = interaction.options.getString('customer');
-    const projectManager = interaction.options.getString('project-manager');
-    await interaction.reply(`Pong ${projectName} ${customer} ${projectManager}!`);
+    const projectNameOption = interaction.options.getString('project-name');
+    const customerOption = interaction.options.getString('customer');
+    const projectManagerOption = interaction.options.getString('project-manager');
+    const conn = await openConnection();
+
+    const customer = await Customer.getByName(conn, customerOption);
+    const projectManager = await ProjectManager.getByName(conn, projectManagerOption);
+
+    if (!customer) {
+      await interaction.reply(`Customer '${customerOption}' not found`);
+      await conn.end();
+      return;
+    }
+    if (!projectManager) {
+      await interaction.reply(`Project manager '${projectManagerOption}' not found`);
+      await conn.end();
+      return;
+    }
+
+    const project = new Project({
+      name: projectNameOption,
+      customer: customer.customerId,
+      projectManager: projectManager.projectManagerId,
+    });
+    await project.save(conn);
+
+    await interaction.reply(`Project '${projectNameOption}' created!`);
+    await conn.end();
   },
 };
