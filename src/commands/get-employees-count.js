@@ -19,6 +19,6 @@ module.exports = {
       .call(conn);
 
     await interaction.reply(`The number of employees for company ${companyOption} is ${output}`);
-    await conn.destroy();
+    await conn.end();
   },
 };

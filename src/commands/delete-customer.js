@@ -18,13 +18,13 @@ module.exports = {
     const customer = await Customer.getByName(conn, customerOption);
     if (!customer) {
       await interaction.reply(`Could not find customer '${customerOption}'`);
-      await conn.destroy();
+      await conn.end();
       return;
     }
 
     await customer.remove(conn);
 
     await interaction.reply(`Customer '${customer.name}' was deleted`);
-    await conn.destroy();
+    await conn.end();
   },
 };

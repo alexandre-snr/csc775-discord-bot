@@ -23,7 +23,7 @@ module.exports = {
     const user = await User.getByName(conn, userOption);
     if (!user) {
       await interaction.reply(`Could not find user '${userOption}'`);
-      await conn.destroy();
+      await conn.end();
       return;
     }
 
@@ -31,6 +31,6 @@ module.exports = {
     await user.save(conn);
 
     await interaction.reply(`${user.firstName} ${user.lastName}'s email was set to '${user.credentials.email}'`);
-    await conn.destroy();
+    await conn.end();
   },
 };

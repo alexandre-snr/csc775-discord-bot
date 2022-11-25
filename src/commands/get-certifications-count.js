@@ -20,6 +20,6 @@ module.exports = {
       .call(conn);
 
     await interaction.reply(`The number of certifications proposed by '${institutionNameOption}' is ${output}`);
-    await conn.destroy();
+    await conn.end();
   },
 };

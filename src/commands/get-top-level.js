@@ -18,6 +18,6 @@ module.exports = {
       .call(conn);
 
     await interaction.reply(`The highest level for skill '${skillNameOption}' is ${output}`);
-    await conn.destroy();
+    await conn.end();
   },
 };

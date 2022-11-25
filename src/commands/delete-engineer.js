@@ -19,13 +19,13 @@ module.exports = {
     const engineer = await Engineer.getByName(conn, engineerOption);
     if (!engineer) {
       await interaction.reply(`Could not find engineer '${engineerOption}'`);
-      await conn.destroy();
+      await conn.end();
       return;
     }
 
     await engineer.remove(conn);
 
     await interaction.reply(`Engineer '${engineerOption}' was deleted`);
-    await conn.destroy();
+    await conn.end();
   },
 };

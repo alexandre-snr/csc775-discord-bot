@@ -19,6 +19,6 @@ module.exports = {
       .call(conn);
 
     await interaction.reply(`The name for this level is '${output}'`);
-    await conn.destroy();
+    await conn.end();
   },
 };
