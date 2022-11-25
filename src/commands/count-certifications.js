@@ -11,7 +11,6 @@ module.exports = {
       .setDescription('The maximum number of certifications')),
   async execute(interaction) {
     const maxNumberOfCertificationsOption = interaction.options.getNumber('max-number-of-certifications') ?? 0;
-
     const conn = await openConnection();
 
     const employees = await Employee

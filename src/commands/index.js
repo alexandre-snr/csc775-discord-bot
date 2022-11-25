@@ -4,7 +4,7 @@ module.exports = [
   require('./create-sprint'), // TODO
   require('./delete-customer'),
   require('./delete-engineer'),
-  require('./find-lazy-employees'), // TODO
+  require('./find-lazy-employees'),
   require('./get-certifications-count'),
   require('./get-employees-count'),
   require('./get-level-name'),
