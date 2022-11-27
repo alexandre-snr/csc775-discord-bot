@@ -155,6 +155,58 @@ class Employee {
       },
     }));
   }
+
+  static async getMostFilledPod(conn) {
+    const res = await Select({
+      fields: [
+        'pod_leader',
+      ],
+      tableName: 'Employee',
+    }).groupBy('pod_leader')
+      .orderBy('COUNT(pod_leader)')
+      .limit(1)
+      .execute(conn);
+    return res[0][0].pod_leader;
+  }
+
+  static async findEmployeesFromPod(conn, pod) {
+    const query = Select({
+      tableName: 'Employee',
+      tableNameVar: 'employee',
+      vars: [pod],
+      where: 'pod_leader = ?',
+    }).join({
+      tableName: 'User',
+      tableNameVar: 'user',
+      condition: 'user.user_id = employee.user_id',
+    });
+
+    const [rows] = await query.execute(conn);
+
+    return rows.map((row) => new Employee({
+      employeeId: row.employee_id,
+      user: {
+        userId: row['user.user_id'],
+        firstName: row.first_name,
+        middleName: row.middle_name,
+        lastName: row.last_name,
+        dateOfBirth: row.date_of_birth,
+        credentials: new Credentials({
+          credentialsId: row.credentials_id,
+          email: row.email,
+          password: row.password,
+        }),
+        address: new Address({
+          addressId: row.address_id,
+          country: row.country,
+          state: row.state,
+          city: row.city,
+          street: row.street,
+          postalCode: row.postal_code,
+        }),
+      },
+    }));
+  }
 }
 
 module.exports = Employee;

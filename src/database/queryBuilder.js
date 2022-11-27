@@ -59,6 +59,17 @@ class Select {
     return this;
   }
 
+  orderBy(order, direction = 'DESC') {
+    this.order = order;
+    this.direction = direction;
+    return this;
+  }
+
+  limit(limitVal) {
+    this.limitVal = limitVal;
+    return this;
+  }
+
   async execute(conn) {
     const fields = this.fields.join(', ');
     const joins = this.joins.map(
@@ -70,7 +81,9 @@ class Select {
       + (joins.length > 0 ? ` ${joins.join(' ')}` : '')
       + (this.where ? ` WHERE ${this.where}` : '')
       + (this.groupByFields ? ` GROUP BY ${this.groupByFields}` : '')
-      + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '');
+      + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '')
+      + (this.order ? ` ORDER BY ${this.order} ${this.direction}` : '')
+      + (this.limitVal ? ` LIMIT ${this.limitVal}` : '');
 
     return conn.execute(query, this.vars);
   }

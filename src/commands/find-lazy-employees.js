@@ -15,7 +15,6 @@ module.exports = {
 
     const employees = await Employee
       .findEmployeesWithMinHolidays(conn, minNumberOfHolidaysTaken);
-    console.log(JSON.stringify(employees));
 
     await interaction.reply(`Employee who have more than ${minNumberOfHolidaysTaken} holidays:\n${employees.map((employee) => (
       `${employee.user.firstName} ${employee.user.lastName}`

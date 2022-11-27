@@ -9,7 +9,7 @@ module.exports = [
   require('./get-employees-count'),
   require('./get-level-name'),
   require('./get-top-level'),
-  require('./most-filled-pod'), // TODO
+  require('./most-filled-pod'),
   require('./overused-coworking-spaces'), // TODO
   require('./set-user-country'),
   require('./set-user-email'),
