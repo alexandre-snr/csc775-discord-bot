@@ -10,7 +10,7 @@ module.exports = [
   require('./get-level-name'),
   require('./get-top-level'),
   require('./most-filled-pod'),
-  require('./overused-coworking-spaces'), // TODO
+  require('./overused-coworking-spaces'),
   require('./set-user-country'),
   require('./set-user-email'),
   require('./understaffed-projects'), // TODO
