@@ -13,6 +13,6 @@ module.exports = [
   require('./overused-coworking-spaces'),
   require('./set-user-country'),
   require('./set-user-email'),
-  require('./understaffed-projects'), // TODO
+  require('./understaffed-projects'),
   require('./unmastered-skills'), // TODO
 ];

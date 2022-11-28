@@ -70,7 +70,7 @@ class Select {
     return this;
   }
 
-  async execute(conn) {
+  getQuery() {
     const fields = this.fields.join(', ');
     const joins = this.joins.map(
       (join) => `${join.joinType ? `${join.joinType} ` : ''}JOIN ${join.tableName} ${join.tableNameVar} ON ${join.condition}`,
@@ -84,7 +84,11 @@ class Select {
       + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '')
       + (this.order ? ` ORDER BY ${this.order} ${this.direction}` : '')
       + (this.limitVal ? ` LIMIT ${this.limitVal}` : '');
+    return query;
+  }
 
+  async execute(conn) {
+    const query = this.getQuery();
     return conn.execute(query, this.vars);
   }
 }
