@@ -15,7 +15,6 @@ module.exports = {
 
     const employees = await Employee
       .findEmployeesWithMaxCertifications(conn, maxNumberOfCertificationsOption);
-    console.log(JSON.stringify(employees));
 
     await interaction.reply(`Employee who have less than or equal to ${maxNumberOfCertificationsOption} certifications:\n${employees.map((employee) => (
       `${employee.user.firstName} ${employee.user.lastName}`
