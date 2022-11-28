@@ -18,7 +18,7 @@ module.exports = {
 
     await interaction.reply(`Employee who have more than ${minNumberOfHolidaysTaken} holidays:\n${employees.map((employee) => (
       `${employee.user.firstName} ${employee.user.lastName}`
-    )).join(', ')}`);
+    )).join('\n')}`);
     await conn.end();
   },
 };

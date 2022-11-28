@@ -13,7 +13,7 @@ module.exports = {
 
     await interaction.reply(`Most used pod is ${mostUsedPod}:\n${employees.map((employee) => (
       `${employee.user.firstName} ${employee.user.lastName}`
-    )).join(', ')}`);
+    )).join('\n')}`);
     await conn.end();
   },
 };

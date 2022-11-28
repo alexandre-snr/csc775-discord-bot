@@ -20,7 +20,7 @@ module.exports = {
 
     await interaction.reply(`Overused coworking spaces:\n${coworkingSpaces.map((coworkingSpace) => (
       `${coworkingSpace.address.street} ${coworkingSpace.address.city} ${coworkingSpace.address.state} ${coworkingSpace.address.country}`
-    ))}`);
+    )).join('\n')}`);
     await conn.end();
   },
 };

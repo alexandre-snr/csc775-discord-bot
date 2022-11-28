@@ -84,6 +84,9 @@ class Select {
       + (this.havingConditions ? ` HAVING ${this.havingConditions}` : '')
       + (this.order ? ` ORDER BY ${this.order} ${this.direction}` : '')
       + (this.limitVal ? ` LIMIT ${this.limitVal}` : '');
+
+    console.log(query);
+
     return query;
   }
 

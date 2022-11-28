@@ -19,7 +19,7 @@ module.exports = {
 
     await interaction.reply(`Employee who have less than or equal to ${maxNumberOfCertificationsOption} certifications:\n${employees.map((employee) => (
       `${employee.user.firstName} ${employee.user.lastName}`
-    )).join(', ')}`);
+    )).join('\n')}`);
     await conn.end();
   },
 };

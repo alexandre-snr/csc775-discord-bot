@@ -12,7 +12,7 @@ module.exports = {
     const projects = await Project.getUnderstaffedProjects(conn);
     await interaction.reply(`Understaffed projects:\n${projects.map((project) => (
       `${project.name}`
-    ))}`);
+    )).join('\n')}`);
 
     await conn.end();
   },

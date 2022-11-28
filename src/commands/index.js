@@ -14,5 +14,5 @@ module.exports = [
   require('./set-user-country'),
   require('./set-user-email'),
   require('./understaffed-projects'),
-  require('./unmastered-skills'), // TODO
+  require('./unmastered-skills'),
 ];
